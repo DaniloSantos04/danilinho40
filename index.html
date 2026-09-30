@@ -1,0 +1,240 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Todo Mundo Ama o Danilinho — 40 anos</title>
+<meta name="description" content="07/11/2026 a partir das 13h — Salão de Festa da Turma. Confirme sua presença!">
+<meta property="og:title" content="🎉 Todo Mundo Ama o Danilinho — 40 anos">
+<meta property="og:description" content="07/11/2026 (sábado), a partir das 13h. Confirme sua presença!">
+<meta property="og:image" content="https://danilosantos04.github.io/danilinho40/banner.webp">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#1f5fc4">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bowlby+One&family=Patrick+Hand&family=Nunito:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --sky:#2e74d6;
+    --sky-deep:#1b4f9e;
+    --yellow:#ffd92e;
+    --ink:#14234b;
+    --paper:#fbf7ee;
+    --line:#d9e4f2;
+    --margin:#e9a3a3;
+    --ok:#1f8a4c;
+    --bad:#c0392b;
+    --warn:#b7791f;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0}
+  html{background:var(--sky-deep)}
+  body{
+    font-family:"Nunito",system-ui,sans-serif;
+    color:var(--ink);
+    background:
+      radial-gradient(1200px 600px at 50% -200px, #5b9bf0 0%, transparent 70%),
+      linear-gradient(180deg,var(--sky) 0%,var(--sky-deep) 100%);
+    min-height:100vh;
+    padding:24px 16px 48px;
+  }
+  .wrap{max-width:640px;margin:0 auto}
+  .banner{
+    display:block;width:100%;height:auto;
+    border-radius:18px;
+    border:5px solid var(--ink);
+    box-shadow:8px 8px 0 var(--ink);
+    background:#9cc4f5;
+  }
+
+  .paper{
+    position:relative;
+    margin-top:28px;
+    background:
+      linear-gradient(90deg,transparent 46px,var(--margin) 46px,var(--margin) 48px,transparent 48px),
+      repeating-linear-gradient(180deg,var(--paper) 0 31px,var(--line) 31px 32px);
+    background-color:var(--paper);
+    border:4px solid var(--ink);
+    border-radius:14px;
+    box-shadow:8px 8px 0 var(--ink);
+    padding:26px 22px 26px 64px;
+    transform:rotate(-.6deg);
+  }
+  .paper > *{transform:rotate(.6deg)}
+  .paper::before{
+    content:"";position:absolute;left:14px;top:22px;bottom:22px;width:14px;
+    background:radial-gradient(circle at 7px 7px,#c9b99a 5px,transparent 6px) 0 0/14px 44px repeat-y;
+    opacity:.9;
+  }
+
+  h1{
+    font-family:"Bowlby One",Impact,sans-serif;
+    font-weight:400;
+    font-size:clamp(26px,6.5vw,38px);
+    line-height:1.05;
+    margin:0 0 14px;
+    color:var(--yellow);
+    -webkit-text-stroke:2px var(--ink);
+    paint-order:stroke fill;
+    text-shadow:3px 3px 0 var(--ink);
+    letter-spacing:.5px;
+  }
+  .hand{font-family:"Patrick Hand",cursive;font-size:22px;line-height:32px}
+  p{margin:0 0 32px}
+  .hl{background:linear-gradient(transparent 12%,var(--yellow) 12%,var(--yellow) 88%,transparent 88%);padding:0 6px;border-radius:3px}
+
+  .info{list-style:none;margin:0 0 32px;padding:0}
+  .info li{display:flex;gap:10px;align-items:flex-start}
+  .info .emoji{width:28px;flex:none;text-align:center}
+  .sign{font-weight:400}
+
+  .rsvp{
+    margin-top:28px;
+    background:#fff;
+    border:4px solid var(--ink);
+    border-radius:14px;
+    box-shadow:8px 8px 0 var(--ink);
+    padding:24px 22px;
+  }
+  .rsvp h2{
+    font-family:"Bowlby One",Impact,sans-serif;font-weight:400;
+    font-size:24px;margin:0 0 4px;letter-spacing:.5px;
+  }
+  .rsvp .sub{margin:0 0 16px;font-size:15px;color:#3b4a6b}
+  label{display:block;font-weight:800;font-size:14px;margin-bottom:6px}
+  .row{display:flex;gap:10px;flex-wrap:wrap}
+  input[type=text]{
+    flex:1 1 220px;min-width:0;
+    font:600 18px "Nunito",sans-serif;color:var(--ink);
+    padding:14px 14px;border:3px solid var(--ink);border-radius:10px;background:#fffdf5;
+    outline:none;
+  }
+  input[type=text]:focus{box-shadow:0 0 0 4px rgba(255,217,46,.8)}
+  button{
+    flex:0 0 auto;
+    font:400 18px "Bowlby One",Impact,sans-serif;letter-spacing:.5px;
+    color:var(--ink);background:var(--yellow);
+    border:3px solid var(--ink);border-radius:10px;
+    padding:12px 22px;cursor:pointer;
+    box-shadow:4px 4px 0 var(--ink);
+    transition:transform .08s,box-shadow .08s;
+  }
+  button:hover{transform:translate(-1px,-1px);box-shadow:5px 5px 0 var(--ink)}
+  button:active{transform:translate(3px,3px);box-shadow:1px 1px 0 var(--ink)}
+  button:disabled{opacity:.6;cursor:wait}
+  .msg{margin-top:16px;padding:14px 16px;border-radius:10px;font-weight:600;display:none;border:3px solid}
+  .msg.show{display:block}
+  .msg.ok{background:#e8f7ee;border-color:var(--ok);color:#12532e}
+  .msg.bad{background:#fdecea;border-color:var(--bad);color:#7a1f16}
+  .msg.warn{background:#fff6e0;border-color:var(--warn);color:#6b4410}
+  .hint{margin-top:12px;font-size:13px;color:#56627d}
+
+  .maps{
+    display:inline-block;margin-top:-18px;margin-bottom:28px;
+    font:600 15px "Nunito",sans-serif;color:var(--sky-deep);
+  }
+  footer{text-align:center;color:#dce8fb;font-size:13px;margin-top:28px}
+
+  @media (max-width:480px){
+    body{padding:16px 16px 40px}
+    .paper{padding:22px 16px 22px 52px}
+    .paper::before{left:10px}
+    .paper{background:
+      linear-gradient(90deg,transparent 38px,var(--margin) 38px,var(--margin) 40px,transparent 40px),
+      repeating-linear-gradient(180deg,var(--paper) 0 31px,var(--line) 31px 32px);background-color:var(--paper)}
+    .hand{font-size:20px}
+    button{width:100%}
+  }
+  @media (prefers-reduced-motion:reduce){button{transition:none}}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <img class="banner" src="banner.webp" width="720" height="658"
+       alt="Convite: Todo Mundo Ama o Danilinho, desde 86. Dia 07/11/2026 às 13h, Avenida Manoel Pedro Pimentel, 101, Salão de Festa da Turma.">
+
+  <section class="paper">
+    <h1>🎉 Todo Mundo Ama o Danilinho! 🎉</h1>
+
+    <p class="hand">Chegou a hora de comemorar <span class="hl">40 anos</span> de história, resenhas e muitas histórias pra contar! 😂🍻</p>
+
+    <p class="hand">Quero reunir vocês para celebrar esse momento especial do jeito que a gente gosta: com comida, bebida, música e muita resenha!</p>
+
+    <ul class="info hand">
+      <li><span class="emoji">📅</span><span><strong>07/11/2026</strong> (sábado)</span></li>
+      <li><span class="emoji">⏰</span><span>A partir das <strong>13h</strong></span></li>
+      <li><span class="emoji">📍</span><span>Avenida Manoel Pedro Pimentel, 101 — Salão de Festa da Turma</span></li>
+    </ul>
+    <a class="maps" href="https://www.google.com/maps/search/?api=1&query=Avenida%20Manoel%20Pedro%20Pimentel%2C%20101" target="_blank" rel="noopener">Abrir no mapa →</a>
+
+    <p class="hand">Afinal, 40 anos não é todo dia que se comemora! 🥳<br>Espero vocês para fazer parte dessa comemoração.</p>
+
+    <p class="hand sign" style="margin-bottom:0"><strong>Danilinho, desde 86</strong> — e cada vez mais amado! ❤️😂</p>
+  </section>
+
+  <section class="rsvp" aria-labelledby="rsvp-title">
+    <h2 id="rsvp-title">Confirme sua presença</h2>
+    <p class="sub">Digite seu nome completo, do jeitinho que está no convite.</p>
+    <form id="form" autocomplete="off" novalidate>
+      <label for="nome">Nome completo</label>
+      <div class="row">
+        <input id="nome" name="nome" type="text" maxlength="120" placeholder="Ex.: João da Silva" required>
+        <button id="btn" type="submit">Confirmar</button>
+      </div>
+    </form>
+    <div id="msg" class="msg" role="status" aria-live="polite"></div>
+    <p class="hint">Acentos e maiúsculas não importam, mas o nome precisa estar completo.</p>
+  </section>
+
+  <footer>Danilinho · desde 86</footer>
+</main>
+
+<script>
+  // URL do Web App do Google Apps Script (Implantar → Nova implantação → App da Web)
+  const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzzPCxPwW9OFeyGfdEoy-BAdSNrzIKI52GPirzUeXp97F-cLTbv_kBwgoB8k3xlXnr4/exec";
+
+  const form = document.getElementById("form");
+  const input = document.getElementById("nome");
+  const btn = document.getElementById("btn");
+  const msg = document.getElementById("msg");
+
+  function show(kind, html){
+    msg.className = "msg show " + kind;
+    msg.innerHTML = html;
+  }
+  function esc(s){
+    return String(s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+  }
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const nome = input.value.trim().replace(/\s+/g, " ");
+    if (!nome){ show("warn","Digite seu nome completo 😉"); input.focus(); return; }
+
+    btn.disabled = true; btn.textContent = "Enviando…";
+    try{
+      const r = await fetch(SCRIPT_URL, {
+        method: "POST",
+        headers: { "Content-Type": "text/plain;charset=utf-8" }, // evita preflight CORS
+        body: JSON.stringify({ nome })
+      });
+      const d = await r.json();
+      if (d.status === "confirmado"){
+        show("ok", `Presença confirmada, <strong>${esc(d.nome)}</strong>! 🎉 Te espero lá no dia 07/11.`);
+        form.reset();
+      } else if (d.status === "ja_confirmado"){
+        show("warn", `<strong>${esc(d.nome)}</strong>, sua presença já estava confirmada. 😄`);
+      } else if (d.status === "nao_encontrado"){
+        show("bad", "Não encontrei esse nome na lista. Confira se digitou o <strong>nome completo</strong> igual ao do convite, ou fale com o Danilinho.");
+      } else {
+        show("bad", esc(d.mensagem || "Algo deu errado. Tente de novo em instantes."));
+      }
+    }catch(err){
+      show("bad", "Não consegui enviar agora. Verifique sua conexão e tente novamente.");
+    }finally{
+      btn.disabled = false; btn.textContent = "Confirmar";
+    }
+  });
+</script>
+</body>
+</html>
