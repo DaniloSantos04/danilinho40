@@ -160,6 +160,9 @@
     background:#fdecea;color:#7a1f16;font-weight:600;
   }
   .encerrado p{margin:8px 0 0}
+  .encerrado + .sub{margin-top:14px}
+  .consulta .campo-faixa{display:none}
+  .consulta .campos{grid-template-columns:1fr}
   .encerrado-titulo{font:400 19px "Bowlby One",Impact,sans-serif;letter-spacing:.3px}
 
   .fila{
@@ -231,6 +234,7 @@
     <div id="encerrado" class="encerrado" hidden>
       <div class="encerrado-titulo">⏰ Confirmações encerradas!</div>
       <p>O prazo para confirmar presença terminou no dia <strong>31/10/2026</strong>.</p>
+      <p>Você ainda pode consultar abaixo se a sua presença está confirmada.</p>
       <p>Ficou de fora? Fala direto com o Danilinho — quem sabe ele dá um jeitinho! 😎👑</p>
     </div>
     <p id="sub" class="sub">Digite nome e sobrenome, do jeitinho que está no convite. Vai com a família? Adicione cada pessoa abaixo.</p>
@@ -265,7 +269,7 @@
         <label>Nome e sobrenome</label>
         <input type="text" class="f-nome" maxlength="120" placeholder="Ex.: João da Silva">
       </div>
-      <div>
+      <div class="campo-faixa">
         <label>Idade</label>
         <select class="f-faixa">
           <option value="">Selecione…</option>
@@ -306,9 +310,18 @@
   function definirEncerrado(v){
     encerradoFlag = v;
     document.getElementById("encerrado").hidden = !v;
-    ["form", "sub", "hint", "prazo"].forEach(id => { document.getElementById(id).hidden = v; });
-    if (v) hide();
+    document.getElementById("prazo").hidden = v;
+    // O formulário continua na página: depois do prazo ele só consulta, sem gravar nada
+    form.classList.toggle("consulta", v);
+    document.getElementById("sub").textContent = v ? TEXTO_SUB.consulta : TEXTO_SUB.normal;
+    if (!btn.disabled) btn.textContent = rotuloBtn();
+    hide();
   }
+  const TEXTO_SUB = {
+    normal: document.getElementById("sub").textContent,
+    consulta: "Digite nome e sobrenome, do jeitinho que está no convite, para consultar se a presença está confirmada."
+  };
+  function rotuloBtn(){ return encerradoFlag ? "Consultar presença" : "Confirmar presença"; }
   function conferirPrazo(){
     if (!encerradoFlag && Date.now() + ajusteRelogio >= PRAZO_FIM) definirEncerrado(true);
     return encerradoFlag;
@@ -318,7 +331,7 @@
   // O relógio do servidor é quem manda (o do aparelho pode estar errado)
   fetch(SCRIPT_URL).then(r => r.json()).then(d => {
     if (typeof d.agora === "number") ajusteRelogio = d.agora - Date.now();
-    if (typeof d.encerrado === "boolean") definirEncerrado(d.encerrado);
+    if (typeof d.encerrado === "boolean" && d.encerrado !== encerradoFlag) definirEncerrado(d.encerrado);
   }).catch(() => {});
 
   // Banner "fila VIP": aparece nas novas tentativas e some em 5s ou quando chega a resposta
@@ -396,6 +409,7 @@
   const ROTULO = {
     nao_encontrado: "não está na lista. Confira nome e sobrenome iguais aos do convite.",
     ja_confirmado: "já estava confirmado(a).",
+    prazo_encerrado: "não confirmou presença dentro do prazo (31/10/2026). Fala com o Danilinho! 😎",
     faixa_invalida: "selecione a idade.",
     repetido: "aparece repetido no formulário."
   };
@@ -403,18 +417,18 @@
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
     hide();
-    if (conferirPrazo()) return;
+    const consulta = conferirPrazo();
     const itens = [...lista.children];
     let faltando = null;
     const convidados = itens.map(el => {
       const n = el.querySelector(".f-nome"), f = el.querySelector(".f-faixa");
       const nome = limpa(n.value), faixa = f.value;
       if (!nome){ n.classList.add("invalido"); faltando = faltando || n; }
-      if (!faixa){ f.classList.add("invalido"); faltando = faltando || f; }
+      if (!faixa && !consulta){ f.classList.add("invalido"); faltando = faltando || f; }
       return { nome, faixa, el };
     });
     if (faltando){
-      show("warn", "Preencha nome e sobrenome e a idade de cada convidado 😉");
+      show("warn", consulta ? "Digite nome e sobrenome para consultar 😉" : "Preencha nome e sobrenome e a idade de cada convidado 😉");
       faltando.focus();
       return;
     }
@@ -422,7 +436,7 @@
     btn.disabled = true; addBtn.disabled = true; btn.textContent = "Enviando…";
     try{
       const d = await enviar({ convidados: convidados.map(({nome, faixa}) => ({nome, faixa})) });
-      if (d.status === "encerrado"){ definirEncerrado(true); return; }
+      if (d.encerrado === true && !encerradoFlag) definirEncerrado(true);
       if (d.status !== "ok" || !Array.isArray(d.resultados)){
         show("bad", esc(d.mensagem || "Algo deu errado. Tente de novo em instantes."));
         return;
@@ -436,7 +450,7 @@
           ok.push(quem);
           item.el.remove();
         } else if (res.status === "ja_confirmado"){
-          avisos.push(`<strong>${quem}</strong> ${ROTULO.ja_confirmado}`);
+          avisos.push(`<strong>${quem}</strong> ${encerradoFlag ? "está com a presença confirmada! ✅" : ROTULO.ja_confirmado}`);
           item.el.remove();
         } else if (res.status === "nao_encontrado"){
           naoAchados.push(`<strong>${quem}</strong>`);
@@ -466,14 +480,14 @@
         html += `<div${html ? ' style="margin-top:10px"' : ""}>Ué... ${nomes} ${verbo} na lista? 🤔 O Danilinho não erra! Talvez Lili tenha confundido ele. 😂</div>`
               + `<div style="margin-top:6px">Confira nome e sobrenome exatamente como estão no convite. Se estiver tudo certo, fala com o Danilinho — ele vai investigar esse mistério! 👑😎</div>`;
       }
-      if (erros.length) html += `${html ? "<div style=\"margin-top:8px\">Não deu para confirmar:</div>" : ""}<ul>${erros.map(a => `<li>${a}</li>`).join("")}</ul>`;
+      if (erros.length) html += `${html && !encerradoFlag ? "<div style=\"margin-top:8px\">Não deu para confirmar:</div>" : ""}<ul>${erros.map(a => `<li>${a}</li>`).join("")}</ul>`;
       const falhas = erros.length + naoAchados.length;
-      show(falhas ? (ok.length ? "warn" : "bad") : (ok.length ? "ok" : "warn"), html);
+      show(falhas ? (ok.length ? "warn" : "bad") : (ok.length || encerradoFlag ? "ok" : "warn"), html);
     }catch(err){
       show("bad", "Não consegui falar com o servidor agora. Aguarde alguns segundos e tente de novo. Se estiver no Wi-Fi do trabalho ou da escola, tente pelos dados móveis (4G/5G).");
     }finally{
       esconderFila();
-      btn.disabled = false; addBtn.disabled = false; btn.textContent = "Confirmar presença";
+      btn.disabled = false; addBtn.disabled = false; btn.textContent = rotuloBtn();
     }
   });
 </script>
