@@ -463,7 +463,7 @@
           ? naoAchados[0]
           : naoAchados.slice(0, -1).join(", ") + " e " + naoAchados[naoAchados.length - 1];
         const verbo = naoAchados.length === 1 ? "não está" : "não estão";
-        html += `<div${html ? ' style="margin-top:10px"' : ""}>Ué... ${nomes} ${verbo} na lista? 🤔 O Danilinho não erra! Talvez a Liliane tenha confundido ele. 😂</div>`
+        html += `<div${html ? ' style="margin-top:10px"' : ""}>Ué... ${nomes} ${verbo} na lista? 🤔 O Danilinho não erra! Talvez Lili tenha confundido ele. 😂</div>`
               + `<div style="margin-top:6px">Confira nome e sobrenome exatamente como estão no convite. Se estiver tudo certo, fala com o Danilinho — ele vai investigar esse mistério! 👑😎</div>`;
       }
       if (erros.length) html += `${html ? "<div style=\"margin-top:8px\">Não deu para confirmar:</div>" : ""}<ul>${erros.map(a => `<li>${a}</li>`).join("")}</ul>`;
